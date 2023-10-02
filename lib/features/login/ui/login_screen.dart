@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ninja/features/login/bloc/login_bloc.dart';
+import 'package:project_ninja/features/projects/ui/project_home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -33,11 +34,17 @@ class _LoginState extends State<Login> {
           if (state is LoginFailedState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is LoginSuccessState) {}
+          } else if (state is LoginSuccessState) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Projects(),
+                ));
+          }
         },
         builder: (context, state) {
           switch (state.runtimeType) {
-            case LoginInitial:
+            case LoginInitialState:
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
@@ -77,7 +84,7 @@ class _LoginState extends State<Login> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       content: Text(
-                                          "Please Enter Data in TextFields")));
+                                          "Please Enter Data in Text Fields")));
                             } else {
                               loginBloc.add(LoginUserEvent(
                                   username: usernameController.text,
@@ -95,7 +102,7 @@ class _LoginState extends State<Login> {
               );
             default:
               return const SizedBox(
-                child: Text("Error"),
+                child: Center(child: Text("Error")),
               );
           }
         },

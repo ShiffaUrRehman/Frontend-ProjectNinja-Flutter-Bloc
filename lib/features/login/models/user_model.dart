@@ -13,7 +13,7 @@ class User {
       required this.token});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-      id: json["user"]["id"],
+      id: json["user"]["_id"],
       fullname: json["user"]["fullname"],
       username: json["user"]["username"],
       role: json["user"]["role"],

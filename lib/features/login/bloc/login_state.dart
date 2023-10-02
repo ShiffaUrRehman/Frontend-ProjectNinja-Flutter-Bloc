@@ -5,7 +5,7 @@ abstract class LoginState {}
 
 abstract class LoginActionState extends LoginState {}
 
-final class LoginInitial extends LoginState {}
+final class LoginInitialState extends LoginState {}
 
 class LoginLoadingState extends LoginState {}
 

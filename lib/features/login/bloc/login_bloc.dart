@@ -9,19 +9,21 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginInitial()) {
+  LoginBloc() : super(LoginInitialState()) {
     on<LoginUserEvent>(loginUser);
   }
 
   FutureOr<void> loginUser(
       LoginUserEvent event, Emitter<LoginState> emit) async {
-    // emit(LoginLoadingState());
+    emit(LoginLoadingState());
     dynamic response =
         await LoginRepo.userLogin(event.username, event.password);
     if (response is User) {
-      // emit(LoginSuccessState());
+      emit(LoginInitialState());
+      emit(LoginSuccessState());
     } else {
       emit(LoginFailedState(message: response));
+      emit(LoginInitialState());
     }
   }
 }
