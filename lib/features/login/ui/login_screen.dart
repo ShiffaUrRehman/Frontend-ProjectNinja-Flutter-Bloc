@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ninja/features/login/bloc/login_bloc.dart';
-import 'package:project_ninja/features/projects/ui/project_home.dart';
+import 'package:project_ninja/features/projects/ui/project_list.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -38,7 +38,7 @@ class _LoginState extends State<Login> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Projects(),
+                  builder: (context) => const Projects(),
                 ));
           }
         },
