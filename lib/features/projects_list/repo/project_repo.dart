@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:project_ninja/features/login/repo/login_repo.dart';
-import 'package:project_ninja/features/projects/models/project_model.dart';
+import 'package:project_ninja/features/projects_list/models/project_model.dart';
 
 class ProjectRepo {
   static const String url = "http://10.0.2.2:3000";

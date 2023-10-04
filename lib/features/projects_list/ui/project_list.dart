@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ninja/features/projects/bloc/project_bloc.dart';
-import 'package:project_ninja/features/projects/ui/project_home.dart';
+import 'package:project_ninja/features/projects_list/bloc/project_bloc.dart';
+import 'package:project_ninja/features/project_home/ui/project_home.dart';
 
 class Projects extends StatefulWidget {
   const Projects({super.key});
@@ -11,7 +11,7 @@ class Projects extends StatefulWidget {
 }
 
 class _ProjectsState extends State<Projects> {
-  ProjectBloc projectBloc = ProjectBloc();
+  ProjectListBloc projectBloc = ProjectListBloc();
   @override
   void initState() {
     projectBloc.add(FetchProjectsEvent());
@@ -24,7 +24,7 @@ class _ProjectsState extends State<Projects> {
       appBar: AppBar(
         title: const Text('Projects'),
       ),
-      body: BlocConsumer<ProjectBloc, ProjectState>(
+      body: BlocConsumer<ProjectListBloc, ProjectListState>(
         bloc: projectBloc,
         listenWhen: (previous, current) => current is ProjectActionState,
         buildWhen: (previous, current) => current is! ProjectActionState,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_ninja/features/login/repo/login_repo.dart';
-import 'package:project_ninja/features/projects/models/project_model.dart';
+import 'package:project_ninja/features/projects_list/models/project_model.dart';
 
 class ProjectHome extends StatefulWidget {
   final Project project;
@@ -15,7 +15,7 @@ class _ProjectHomeState extends State<ProjectHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tasks'),
+        title: const Text('Project Home'), // rename project as projectList
       ),
       body: Column(children: [
         Text(LoginRepo.user.id),
@@ -31,6 +31,5 @@ class _ProjectHomeState extends State<ProjectHome> {
         Text(widget.project.projectManager.fullname),
       ]),
     );
-    ();
   }
 }
