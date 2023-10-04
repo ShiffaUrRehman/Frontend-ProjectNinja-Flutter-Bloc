@@ -14,15 +14,7 @@ class _ProjectsState extends State<Projects> {
   ProjectBloc projectBloc = ProjectBloc();
   @override
   void initState() {
-    if (LoginRepo.user.role == 'Admin') {
-      projectBloc.add(FetchProjectsAdminEvent());
-    } else if (LoginRepo.user.role == 'Project Manager') {
-      projectBloc.add(FetchProjectsProjectManagerEvent());
-    } else if (LoginRepo.user.role == 'Team Lead') {
-      projectBloc.add(FetchProjectsTeamLeadEvent());
-    } else if (LoginRepo.user.role == 'Team Member') {
-      projectBloc.add(FetchProjectsTeamMemberEvent());
-    }
+    projectBloc.add(FetchProjectsEvent());
     super.initState();
   }
 
