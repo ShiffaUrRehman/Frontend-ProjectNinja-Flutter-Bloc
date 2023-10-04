@@ -15,38 +15,40 @@ class Project {
       required this.projectManager,
       this.teamLead,
       required this.teamMember});
+  static Project fromJson(dynamic json) {
+    var projectManager;
+    var teamLead;
+    var teamMember = <ProjectUser>[];
+    if (json["projectManager"] != null) {
+      projectManager = ProjectUser(
+          id: json["projectManager"]["_id"],
+          fullname: json["projectManager"]["fullname"]);
+    }
+    if (json["teamLead"] != null) {
+      teamLead = ProjectUser(
+          id: json["teamLead"]["_id"], fullname: json["teamLead"]["fullname"]);
+    }
+    if (json["teamMember"] != null) {
+      for (int j = 0; j < json["teamMember"].length; j++) {
+        teamMember.add(ProjectUser(
+            id: json["teamMember"][j]["_id"],
+            fullname: json["teamMember"][j]["fullname"]));
+      }
+    }
+    return Project(
+        id: json["_id"],
+        name: json["name"],
+        description: json["description"],
+        status: json["status"],
+        projectManager: projectManager,
+        teamLead: teamLead,
+        teamMember: teamMember);
+  }
 
-  static List<Project> fromJson(List<dynamic> json) {
+  static List<Project> fromJsonList(List<dynamic> json) {
     var projects = <Project>[];
     for (int i = 0; i < json.length; i++) {
-      var projectManager;
-      var teamLead;
-      var teamMember = <ProjectUser>[];
-      if (json[i]["projectManager"] != null) {
-        projectManager = ProjectUser(
-            id: json[i]["projectManager"]["_id"],
-            fullname: json[i]["projectManager"]["fullname"]);
-      }
-      if (json[i]["teamLead"] != null) {
-        teamLead = ProjectUser(
-            id: json[i]["teamLead"]["_id"],
-            fullname: json[i]["teamLead"]["fullname"]);
-      }
-      if (json[i]["teamMember"] != null) {
-        for (int j = 0; j < json[i]["teamMember"].length; j++) {
-          teamMember.add(ProjectUser(
-              id: json[i]["teamMember"][j]["_id"],
-              fullname: json[i]["teamMember"][j]["fullname"]));
-        }
-      }
-      projects.add(Project(
-          id: json[i]["_id"],
-          name: json[i]["name"],
-          description: json[i]["description"],
-          status: json[i]["status"],
-          projectManager: projectManager,
-          teamLead: teamLead,
-          teamMember: teamMember));
+      projects.add(Project.fromJson(json[i]));
     }
     return projects;
   }

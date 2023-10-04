@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ninja/features/projects_list/bloc/project_bloc.dart';
 import 'package:project_ninja/features/project_home/ui/project_home.dart';
 
-class Projects extends StatefulWidget {
-  const Projects({super.key});
+class ProjectList extends StatefulWidget {
+  const ProjectList({super.key});
 
   @override
-  State<Projects> createState() => _ProjectsState();
+  State<ProjectList> createState() => _ProjectsState();
 }
 
-class _ProjectsState extends State<Projects> {
+class _ProjectsState extends State<ProjectList> {
   ProjectListBloc projectBloc = ProjectListBloc();
   @override
   void initState() {
@@ -32,7 +32,6 @@ class _ProjectsState extends State<Projects> {
           // TODO: implement listener
         },
         builder: (context, state) {
-          print(state.runtimeType);
           switch (state.runtimeType) {
             case NoProjectLoadedState:
               return const Center(
@@ -45,8 +44,8 @@ class _ProjectsState extends State<Projects> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       child: Container(
-                        padding: EdgeInsets.all(20),
-                        margin: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(20),
+                        margin: const EdgeInsets.all(10),
                         color: Colors.grey.shade300,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,

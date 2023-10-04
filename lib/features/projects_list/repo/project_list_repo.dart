@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:project_ninja/features/login/repo/login_repo.dart';
 import 'package:project_ninja/features/projects_list/models/project_model.dart';
 
-class ProjectRepo {
+class ProjectListRepo {
   static const String url = "http://10.0.2.2:3000";
   static Future<dynamic> fetchProjects() async {
     var client = http.Client();
@@ -30,7 +30,7 @@ class ProjectRepo {
         if (decodedResponse.length == 0) {
           return decodedResponse;
         } else {
-          List<Project> projects = Project.fromJson(decodedResponse);
+          List<Project> projects = Project.fromJsonList(decodedResponse);
           return projects;
         }
       } else {
