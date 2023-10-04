@@ -17,14 +17,34 @@ class ProjectRepo {
       });
       if (response.statusCode == 200) {
         var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
-        if (decodedResponse.length == 0) {
-          return decodedResponse;
-        } else {
-          Project project = Project.fromJson(decodedResponse);
-          return project;
-        }
+
+        Project project = Project.fromJson(decodedResponse);
+        return project;
       } else {
         return 'Failed to Load Project, status code: ${response.statusCode} ${response.body}';
+      }
+    } catch (e) {
+      return 'Server Error: $e';
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<dynamic> changeStatus(status, projectId) async {
+    var client = http.Client();
+    try {
+      var response =
+          await client.put(Uri.parse('$url/api/project/status/$projectId'),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ${LoginRepo.user.token}',
+              },
+              body: jsonEncode({"status": status}));
+      if (response.statusCode == 200) {
+        return 1;
+      } else {
+        return 'Failed to Update Project, status code: ${response.statusCode} ${response.body}';
       }
     } catch (e) {
       return 'Server Error: $e';

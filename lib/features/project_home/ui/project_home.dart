@@ -31,12 +31,15 @@ class _ProjectHomeState extends State<ProjectHome> {
         listenWhen: (previous, current) => current is ProjectHomeActionState,
         buildWhen: (previous, current) => current is! ProjectHomeActionState,
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is ProjectHomeReloadState) {
+            projectHomeBloc.add(ProjectLoadEvent(projectId: widget.project.id));
+          }
         },
         builder: (context, state) {
           print(state.runtimeType);
           switch (state.runtimeType) {
             case ProjectHomeLoadedState:
+              final projectLoaded = state as ProjectHomeLoadedState;
               return Container(
                 color: Colors.grey.shade300,
                 padding: const EdgeInsets.all(10),
@@ -50,7 +53,7 @@ class _ProjectHomeState extends State<ProjectHome> {
                                 fontSize: 24, fontWeight: FontWeight.w400)),
                         Flexible(
                           child: Text(
-                            widget.project.name,
+                            projectLoaded.project.name,
                             style: const TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w500),
                           ),
@@ -69,7 +72,7 @@ class _ProjectHomeState extends State<ProjectHome> {
                         ),
                         Flexible(
                           child: Text(
-                            widget.project.description,
+                            projectLoaded.project.description,
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w400),
                           ),
@@ -87,7 +90,7 @@ class _ProjectHomeState extends State<ProjectHome> {
                               fontSize: 20, fontWeight: FontWeight.w400),
                         ),
                         Text(
-                          widget.project.status,
+                          projectLoaded.project.status,
                           style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w400),
                         ),
@@ -96,8 +99,42 @@ class _ProjectHomeState extends State<ProjectHome> {
                         ),
                         (LoginRepo.user.role == 'Admin' ||
                                 LoginRepo.user.role == 'Project Manager')
-                            ? ElevatedButton(
-                                onPressed: () {}, child: const Text('Change'))
+                            ? PopupMenuButton(
+                                initialValue: projectLoaded.project.status,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  child: const Text(
+                                    'Change',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                onSelected: (String item) {
+                                  projectHomeBloc.add(ProjectChangeStatusEvent(
+                                      status: item,
+                                      projectId: widget.project.id));
+                                },
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry<String>>[
+                                  const PopupMenuItem<String>(
+                                    value: "Onboarding",
+                                    child: Text('Onboarding'),
+                                  ),
+                                  const PopupMenuItem<String>(
+                                    value: "In Progress",
+                                    child: Text('In Progress'),
+                                  ),
+                                  const PopupMenuItem<String>(
+                                    value: "Complete",
+                                    child: Text('Complete'),
+                                  ),
+                                ],
+                              )
                             : const SizedBox()
                       ],
                     ),
@@ -111,7 +148,7 @@ class _ProjectHomeState extends State<ProjectHome> {
                                 fontSize: 20, fontWeight: FontWeight.w400)),
                         Flexible(
                           child: Text(
-                            widget.project.projectManager.fullname,
+                            projectLoaded.project.projectManager.fullname,
                             style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w400),
                           ),
@@ -155,21 +192,15 @@ class _ProjectHomeState extends State<ProjectHome> {
               return const Center(
                 child: CircularProgressIndicator(),
               );
+            case ProjectHomeFailedState:
+              return const Center(
+                child: Text('Failed To Load Project'),
+              );
             default:
+              return const Center(
+                child: Text('Error'),
+              );
           }
-          return Column(children: [
-            Text(LoginRepo.user.id),
-            Text(LoginRepo.user.username),
-            Text(LoginRepo.user.fullname),
-            Text(LoginRepo.user.role),
-            Text(LoginRepo.user.token),
-            const Text('Project'),
-            Text(widget.project.id),
-            Text(widget.project.name),
-            Text(widget.project.description),
-            Text(widget.project.status),
-            Text(widget.project.projectManager.fullname),
-          ]);
         },
       ),
     );

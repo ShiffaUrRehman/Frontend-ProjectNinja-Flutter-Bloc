@@ -8,3 +8,10 @@ class ProjectLoadEvent extends ProjectHomeEvent {
 
   ProjectLoadEvent({required this.projectId});
 }
+
+class ProjectChangeStatusEvent extends ProjectHomeEvent {
+  final String status;
+  final String projectId;
+
+  ProjectChangeStatusEvent({required this.status, required this.projectId});
+}

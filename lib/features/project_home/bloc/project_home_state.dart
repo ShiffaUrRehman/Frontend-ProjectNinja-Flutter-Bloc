@@ -20,3 +20,5 @@ class ProjectHomeFailedState extends ProjectHomeState {
 
   ProjectHomeFailedState({required this.message});
 }
+
+class ProjectHomeReloadState extends ProjectHomeActionState {}
