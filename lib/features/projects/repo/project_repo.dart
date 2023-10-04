@@ -59,4 +59,31 @@ class ProjectRepo {
       client.close();
     }
   }
+
+  static Future<dynamic> fetchProjectsTeamLead() async {
+    var client = http.Client();
+    try {
+      var response = await client
+          .get(Uri.parse('$url/api/project/get/teamLead'), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${LoginRepo.user.token}',
+      });
+      if (response.statusCode == 200) {
+        var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decodedResponse.length == 0) {
+          return decodedResponse;
+        } else {
+          List<Project> projects = Project.fromJson(decodedResponse);
+          return projects;
+        }
+      } else {
+        return 'Failed to Load Projects, status code: ${response.statusCode} ${response.body}';
+      }
+    } catch (e) {
+      return 'Server Error: ${e}';
+    } finally {
+      client.close();
+    }
+  }
 }

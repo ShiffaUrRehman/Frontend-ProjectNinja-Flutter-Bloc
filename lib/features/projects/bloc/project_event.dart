@@ -6,3 +6,5 @@ abstract class ProjectEvent {}
 class FetchProjectsAdminEvent extends ProjectEvent {}
 
 class FetchProjectsProjectManagerEvent extends ProjectEvent {}
+
+class FetchProjectsTeamLeadEvent extends ProjectEvent {}

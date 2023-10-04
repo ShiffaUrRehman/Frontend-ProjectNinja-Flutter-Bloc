@@ -18,6 +18,8 @@ class _ProjectsState extends State<Projects> {
       projectBloc.add(FetchProjectsAdminEvent());
     } else if (LoginRepo.user.role == 'Project Manager') {
       projectBloc.add(FetchProjectsProjectManagerEvent());
+    } else if (LoginRepo.user.role == 'Team Lead') {
+      projectBloc.add(FetchProjectsTeamLeadEvent());
     }
     super.initState();
   }
