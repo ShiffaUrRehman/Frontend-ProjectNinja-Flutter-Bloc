@@ -13,6 +13,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     on<FetchProjectsAdminEvent>(fetchProjectsAdminEvent);
     on<FetchProjectsProjectManagerEvent>(fetchProjectsProjectManagerEvent);
     on<FetchProjectsTeamLeadEvent>(fetchProjectsTeamLeadEvent);
+    on<FetchProjectsTeamMemberEvent>(fetchProjectsTeamMemberEvent);
   }
 
   FutureOr<void> fetchProjectsAdminEvent(
@@ -42,6 +43,17 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       FetchProjectsTeamLeadEvent event, Emitter<ProjectState> emit) async {
     emit(ProjectLoadingState());
     dynamic response = await ProjectRepo.fetchProjectsTeamLead();
+    if (response.length == 0) {
+      emit(NoProjectLoadedState());
+    } else {
+      emit(ProjectLoadedState(projects: response));
+    }
+  }
+
+  FutureOr<void> fetchProjectsTeamMemberEvent(
+      FetchProjectsTeamMemberEvent event, Emitter<ProjectState> emit) async {
+    emit(ProjectLoadingState());
+    dynamic response = await ProjectRepo.fetchProjectsTeamMember();
     if (response.length == 0) {
       emit(NoProjectLoadedState());
     } else {
