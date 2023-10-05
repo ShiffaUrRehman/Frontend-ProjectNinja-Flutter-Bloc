@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ninja/features/login/repo/login_repo.dart';
 import 'package:project_ninja/features/project_home/bloc/project_home_bloc.dart';
+import 'package:project_ninja/features/members/ui/members.dart';
 import 'package:project_ninja/features/projects_list/models/project_model.dart';
 
 class ProjectHome extends StatefulWidget {
@@ -36,7 +37,6 @@ class _ProjectHomeState extends State<ProjectHome> {
           }
         },
         builder: (context, state) {
-          print(state.runtimeType);
           switch (state.runtimeType) {
             case ProjectHomeLoadedState:
               final projectLoaded = state as ProjectHomeLoadedState;
@@ -64,6 +64,7 @@ class _ProjectHomeState extends State<ProjectHome> {
                       height: 10,
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Description: ',
@@ -167,7 +168,16 @@ class _ProjectHomeState extends State<ProjectHome> {
                           width: 50,
                         ),
                         ElevatedButton(
-                            onPressed: () {}, child: const Text('View'))
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Members(
+                                      projectId: projectLoaded.project.id,
+                                    ),
+                                  ));
+                            },
+                            child: const Text('View'))
                       ],
                     ),
                     const SizedBox(

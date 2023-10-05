@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:project_ninja/features/project_home/repo/project_repo.dart';
-import 'package:project_ninja/features/projects_list/bloc/project_bloc.dart';
 import 'package:project_ninja/features/projects_list/models/project_model.dart';
 
 part 'project_home_event.dart';

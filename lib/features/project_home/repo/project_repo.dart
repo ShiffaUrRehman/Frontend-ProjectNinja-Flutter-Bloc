@@ -5,7 +5,8 @@ import 'package:project_ninja/features/login/repo/login_repo.dart';
 import 'package:project_ninja/features/projects_list/models/project_model.dart';
 
 class ProjectRepo {
-  static const String url = "http://10.0.2.2:3000";
+  // static const String url = "http://10.0.2.2:3000";
+  static const String url = "http://localhost:3000";
   static Future<dynamic> fetchProject(projectId) async {
     var client = http.Client();
     try {
