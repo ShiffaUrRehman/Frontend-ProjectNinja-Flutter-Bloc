@@ -90,8 +90,6 @@ class _MembersState extends State<Members> {
         listenWhen: (previous, current) => current is ProjectMembersActionState,
         buildWhen: (previous, current) => current is! ProjectMembersActionState,
         listener: (context, state) {
-          print("action states");
-          print(state);
           if (state is PageReload) {
             projectMembersBloc.add(FetchProjects(projectId: widget.projectId));
           } else if (state is TeamLeadsFetched) {
@@ -107,7 +105,6 @@ class _MembersState extends State<Members> {
           }
         },
         builder: (context, state) {
-          print(state.runtimeType);
           switch (state.runtimeType) {
             case ProjectMembersLoading:
               return const Center(
@@ -169,7 +166,6 @@ class _MembersState extends State<Members> {
                                       ),
                                     ),
                                     onSelected: (String item) {
-                                      print(item);
                                       projectMembersBloc.add(
                                           AddOrReplaceTeamLead(
                                               teamLeadId: item,
@@ -195,7 +191,6 @@ class _MembersState extends State<Members> {
                                       ),
                                     ),
                                     onSelected: (String item) {
-                                      print(item);
                                       projectMembersBloc.add(
                                           AddOrReplaceTeamLead(
                                               teamLeadId: item,

@@ -4,6 +4,7 @@ import 'package:project_ninja/features/login/repo/login_repo.dart';
 import 'package:project_ninja/features/project_home/bloc/project_home_bloc.dart';
 import 'package:project_ninja/features/members/ui/members.dart';
 import 'package:project_ninja/features/projects_list/models/project_model.dart';
+import 'package:project_ninja/features/tasks_home/ui/tasks_home.dart';
 
 class ProjectHome extends StatefulWidget {
   final Project project;
@@ -192,7 +193,16 @@ class _ProjectHomeState extends State<ProjectHome> {
                           width: 80,
                         ),
                         ElevatedButton(
-                            onPressed: () {}, child: const Text('View'))
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TasksHome(
+                                      projectId: projectLoaded.project.id,
+                                    ),
+                                  ));
+                            },
+                            child: const Text('View'))
                       ],
                     ),
                   ],
