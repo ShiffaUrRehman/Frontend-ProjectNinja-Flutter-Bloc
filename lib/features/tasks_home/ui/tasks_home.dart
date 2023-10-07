@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ninja/features/task/ui/task_screen.dart';
 import 'package:project_ninja/features/tasks_home/bloc/tasks_home_bloc.dart';
-import 'package:project_ninja/features/tasks_home/model/tasks_model.dart';
 
 class TasksHome extends StatefulWidget {
   final String projectId;

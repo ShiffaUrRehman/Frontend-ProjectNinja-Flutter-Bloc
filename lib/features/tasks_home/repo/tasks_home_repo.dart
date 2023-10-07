@@ -19,9 +19,12 @@ class TasksHomeRepo {
         'Accept': 'application/json',
         'Authorization': 'Bearer ${LoginRepo.user.token}',
       });
+      print("response");
+      print(response.body);
       if (response.statusCode == 200) {
         var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
         if (decodedResponse.length == 0) {
+          print("here");
           return <Task>[];
         } else {
           List<Task> tasks = Task.fromJsonList(decodedResponse);

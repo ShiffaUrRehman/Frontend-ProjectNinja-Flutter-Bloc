@@ -1,6 +1,8 @@
 part of 'task_one_bloc.dart';
 
 @immutable
-sealed class TaskOneState {}
+abstract class TaskOneState {}
+
+abstract class TaskOneActionState extends TaskOneState {}
 
 final class TaskOneInitial extends TaskOneState {}

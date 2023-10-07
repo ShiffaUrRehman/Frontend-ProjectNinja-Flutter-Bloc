@@ -17,6 +17,7 @@ class TasksHomeBloc extends Bloc<TasksHomeEvent, TasksHomeState> {
       FetchTasks event, Emitter<TasksHomeState> emit) async {
     emit(TasksLoading());
     dynamic response = await TasksHomeRepo.fetchTasksAll(event.projectId);
+    print(response);
     if (response is List<Task>) {
       emit(TasksLoaded(tasks: response));
     } else {
