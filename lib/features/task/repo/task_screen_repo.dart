@@ -2,40 +2,34 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:project_ninja/features/login/repo/login_repo.dart';
-import 'package:project_ninja/features/members/model/members_models.dart';
-import 'package:project_ninja/features/projects_list/models/project_model.dart';
-import 'package:project_ninja/features/tasks_home/model/tasks_model.dart';
+import 'package:project_ninja/features/task/model/task_one_model.dart';
 
 class TasksScreenRepo {
   // static const String url = "http://10.0.2.2:3000";
   static const String url = "http://localhost:3000";
 
-  // static Future<dynamic> fetchTasksAll(projectId) async {
-  //   var client = http.Client();
-  //   try {
-  //     var response = await client
-  //         .get(Uri.parse('$url/api/task/getAll/$projectId'), headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json',
-  //       'Authorization': 'Bearer ${LoginRepo.user.token}',
-  //     });
-  //     if (response.statusCode == 200) {
-  //       var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
-  //       if (decodedResponse.length == 0) {
-  //         return <Task>[];
-  //       } else {
-  //         List<Task> tasks = Task.fromJsonList(decodedResponse);
-  //         return tasks;
-  //       }
-  //     } else {
-  //       return 'Failed to Load TeamLeads, status code: ${response.statusCode} ${response.body}';
-  //     }
-  //   } catch (e) {
-  //     return 'Server Error: $e';
-  //   } finally {
-  //     client.close();
-  //   }
-  // }
+  static Future<dynamic> fetchTask(taskId) async {
+    var client = http.Client();
+    try {
+      var response =
+          await client.get(Uri.parse('$url/api/task/get/$taskId'), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${LoginRepo.user.token}',
+      });
+      if (response.statusCode == 200) {
+        var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        TaskOne task = TaskOne.fromJson(decodedResponse);
+        return task;
+      } else {
+        return 'Failed to Load TeamLeads, status code: ${response.statusCode} ${response.body}';
+      }
+    } catch (e) {
+      return 'Server Error: $e';
+    } finally {
+      client.close();
+    }
+  }
 
   // static Future<dynamic> fetchAllTeamLeads() async {
   //   var client = http.Client();

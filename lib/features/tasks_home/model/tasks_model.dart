@@ -10,11 +10,6 @@ class Task {
   });
 
   static Task fromJson(json) {
-    // dynamic assignedTo = [];
-    // if (json["assignedTo"].length != 0) {
-    //   assignedTo = MembersTaskModel.fromJsonList(json["assignedTo"]);
-    // }
-
     return Task(
         id: json["_id"],
         description: json["description"],
@@ -29,24 +24,3 @@ class Task {
     return response;
   }
 }
-
-// class MembersTaskModel {
-//   final String id;
-//   final String fullname;
-
-//   MembersTaskModel({required this.id, required this.fullname});
-
-//   static MembersTaskModel fromJson(json) {
-//     return MembersTaskModel(id: json["_id"], fullname: json["fullname"]);
-//   }
-
-//   static List<MembersTaskModel> fromJsonList(jsonList) {
-//     List<MembersTaskModel> members = [];
-//     for (int i = 0; i < jsonList.length; i++) {
-//       MembersTaskModel test = fromJson(jsonList[i]);
-//       members.add(test);
-//     }
-
-//     return members;
-//   }
-// }
