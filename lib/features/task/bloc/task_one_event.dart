@@ -15,3 +15,10 @@ class ChangeStatusTask extends TaskOneEvent {
 
   ChangeStatusTask({required this.status, required this.taskId});
 }
+
+class RemoveMember extends TaskOneEvent {
+  final String taskId;
+  final String memberId;
+
+  RemoveMember({required this.taskId, required this.memberId});
+}

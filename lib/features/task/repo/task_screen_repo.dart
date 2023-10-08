@@ -55,6 +55,31 @@ class TasksScreenRepo {
     }
   }
 
+  static Future<dynamic> removeMember(taskId, memberId) async {
+    var client = http.Client();
+    try {
+      var response =
+          await client.put(Uri.parse('$url/api/task/removeMember/$taskId'),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ${LoginRepo.user.token}',
+              },
+              body: jsonEncode({
+                'member': memberId,
+              }));
+      if (response.statusCode == 201) {
+        return 1;
+      } else {
+        return 'Failed to Update Status of Task, status code: ${response.statusCode} ${response.body}';
+      }
+    } catch (e) {
+      return 'Server Error: $e';
+    } finally {
+      client.close();
+    }
+  }
+
   // static Future<dynamic> fetchAllTeamLeads() async {
   //   var client = http.Client();
   //   try {
