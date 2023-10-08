@@ -13,6 +13,8 @@ class TaskOneBloc extends Bloc<TaskOneEvent, TaskOneState> {
     on<FetchTaskDetails>(fetchTaskDetails);
     on<ChangeStatusTask>(changeStatusTask);
     on<RemoveMember>(removeMember);
+    on<FetchMembersProject>(fetchMembersProject);
+    on<AddMember>(addMember);
   }
 
   FutureOr<void> fetchTaskDetails(
@@ -43,6 +45,30 @@ class TaskOneBloc extends Bloc<TaskOneEvent, TaskOneState> {
     emit(TaskOneLoading());
     dynamic response =
         await TasksScreenRepo.removeMember(event.taskId, event.memberId);
+    if (response == 1) {
+      emit(ReloadTask());
+    } else {
+      emit(TaskStatusUpdateFailed());
+    }
+  }
+
+  FutureOr<void> fetchMembersProject(
+      FetchMembersProject event, Emitter<TaskOneState> emit) async {
+    emit(TaskOneLoading());
+    dynamic response =
+        await TasksScreenRepo.fetchAllProjectMembers(event.projectId);
+    print(response);
+    if (response is List<TaskMember>) {
+      emit(MembersTaskLoaded(members: response));
+    } else {
+      emit(MembersTaskLoadFailed());
+    }
+  }
+
+  FutureOr<void> addMember(AddMember event, Emitter<TaskOneState> emit) async {
+    emit(TaskOneLoading());
+    dynamic response =
+        await TasksScreenRepo.addMember(event.taskId, event.memberId);
     if (response == 1) {
       emit(ReloadTask());
     } else {

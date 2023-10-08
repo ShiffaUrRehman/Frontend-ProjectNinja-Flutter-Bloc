@@ -22,3 +22,16 @@ class RemoveMember extends TaskOneEvent {
 
   RemoveMember({required this.taskId, required this.memberId});
 }
+
+class FetchMembersProject extends TaskOneEvent {
+  final String projectId;
+
+  FetchMembersProject({required this.projectId});
+}
+
+class AddMember extends TaskOneEvent {
+  final String taskId;
+  final String memberId;
+
+  AddMember({required this.taskId, required this.memberId});
+}

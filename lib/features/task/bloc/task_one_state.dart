@@ -21,4 +21,12 @@ class TaskStatusUpdated extends TaskOneActionState {}
 
 class TaskStatusUpdateFailed extends TaskOneActionState {}
 
+class MembersTaskLoaded extends TaskOneActionState {
+  final List<TaskMember> members;
+
+  MembersTaskLoaded({required this.members});
+}
+
+class MembersTaskLoadFailed extends TaskOneActionState {}
+
 class ReloadTask extends TaskOneActionState {}

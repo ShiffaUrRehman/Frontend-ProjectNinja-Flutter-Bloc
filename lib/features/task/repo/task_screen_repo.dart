@@ -80,143 +80,51 @@ class TasksScreenRepo {
     }
   }
 
-  // static Future<dynamic> fetchAllTeamLeads() async {
-  //   var client = http.Client();
-  //   try {
-  //     var response =
-  //         await client.get(Uri.parse('$url/api/users/get/teamLeads'), headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json',
-  //       'Authorization': 'Bearer ${LoginRepo.user.token}',
-  //     });
-  //     if (response.statusCode == 200) {
-  //       var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
-  //       List<MembersModel> members = MembersModel.fromJsonList(decodedResponse);
-  //       return members;
-  //     } else {
-  //       return 'Failed to Load TeamLeads, status code: ${response.statusCode} ${response.body}';
-  //     }
-  //   } catch (e) {
-  //     return 'Server Error: $e';
-  //   } finally {
-  //     client.close();
-  //   }
-  // }
+  static Future<dynamic> fetchAllProjectMembers(projectId) async {
+    var client = http.Client();
+    try {
+      var response = await client
+          .get(Uri.parse('$url/api/project/members/$projectId'), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${LoginRepo.user.token}',
+      });
+      if (response.statusCode == 200) {
+        var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        List<TaskMember> members = TaskMember.fromJsonList(decodedResponse);
+        return members;
+      } else {
+        return 'Failed to Load Members, status code: ${response.statusCode} ${response.body}';
+      }
+    } catch (e) {
+      return 'Server Error: $e';
+    } finally {
+      client.close();
+    }
+  }
 
-  // static Future<dynamic> fetchAllTeamMembers() async {
-  //   var client = http.Client();
-  //   try {
-  //     var response = await client
-  //         .get(Uri.parse('$url/api/users/get/teamMembers'), headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json',
-  //       'Authorization': 'Bearer ${LoginRepo.user.token}',
-  //     });
-  //     if (response.statusCode == 200) {
-  //       var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
-  //       List<MembersModel> members = MembersModel.fromJsonList(decodedResponse);
-  //       return members;
-  //     } else {
-  //       return 'Failed to Load TeamLeads, status code: ${response.statusCode} ${response.body}';
-  //     }
-  //   } catch (e) {
-  //     return 'Server Error: $e';
-  //   } finally {
-  //     client.close();
-  //   }
-  // }
-
-  // static Future<dynamic> fetchProject(projectId) async {
-  //   var client = http.Client();
-  //   try {
-  //     var response = await client
-  //         .get(Uri.parse('$url/api/project/get/project/$projectId'), headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json',
-  //       'Authorization': 'Bearer ${LoginRepo.user.token}',
-  //     });
-  //     if (response.statusCode == 200) {
-  //       var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
-
-  //       Project project = Project.fromJson(decodedResponse);
-  //       return project;
-  //     } else {
-  //       return 'Failed to Load Project, status code: ${response.statusCode} ${response.body}';
-  //     }
-  //   } catch (e) {
-  //     return 'Server Error: $e';
-  //   } finally {
-  //     client.close();
-  //   }
-  // }
-
-  // static Future<dynamic> addOrReplaceTeamLeadProject(
-  //     teamLead, projectId) async {
-  //   var client = http.Client();
-  //   try {
-  //     var response = await client.put(
-  //         Uri.parse('$url/api/project/add/teamLead/$projectId'),
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'Accept': 'application/json',
-  //           'Authorization': 'Bearer ${LoginRepo.user.token}',
-  //         },
-  //         body: jsonEncode({"teamLead": teamLead}));
-  //     if (response.statusCode == 200) {
-  //       return 1;
-  //     } else {
-  //       return 'Failed to Add/Replace Team Lead in Project, status code: ${response.statusCode} ${response.body}';
-  //     }
-  //   } catch (e) {
-  //     return 'Server Error: $e';
-  //   } finally {
-  //     client.close();
-  //   }
-  // }
-
-  // static Future<dynamic> removeTeamMemberProject(teamMember, projectId) async {
-  //   var client = http.Client();
-  //   try {
-  //     var response = await client.put(
-  //         Uri.parse('$url/api/project/teamMember/remove/$projectId'),
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'Accept': 'application/json',
-  //           'Authorization': 'Bearer ${LoginRepo.user.token}',
-  //         },
-  //         body: jsonEncode({"teamMember": teamMember}));
-  //     if (response.statusCode == 200) {
-  //       return 1;
-  //     } else {
-  //       return 'Failed to Add/Replace Team Lead in Project, status code: ${response.statusCode} ${response.body}';
-  //     }
-  //   } catch (e) {
-  //     return 'Server Error: $e';
-  //   } finally {
-  //     client.close();
-  //   }
-  // }
-
-  // static Future<dynamic> addTeamMemberProject(teamMember, projectId) async {
-  //   var client = http.Client();
-  //   try {
-  //     var response =
-  //         await client.put(Uri.parse('$url/api/project/teamMember/$projectId'),
-  //             headers: {
-  //               'Content-Type': 'application/json',
-  //               'Accept': 'application/json',
-  //               'Authorization': 'Bearer ${LoginRepo.user.token}',
-  //             },
-  //             body: jsonEncode({"teamMember": teamMember}));
-  //     if (response.statusCode == 200) {
-  //       return 1;
-  //     } else {
-  //       return 'Failed to Add/Replace Team Lead in Project, status code: ${response.statusCode} ${response.body}';
-  //     }
-  //   } catch (e) {
-  //     return 'Server Error: $e';
-  //   } finally {
-  //     client.close();
-  //   }
-  // }
+  static Future<dynamic> addMember(taskId, memberId) async {
+    var client = http.Client();
+    try {
+      var response =
+          await client.put(Uri.parse('$url/api/task/addMember/$taskId'),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ${LoginRepo.user.token}',
+              },
+              body: jsonEncode({
+                'member': memberId,
+              }));
+      if (response.statusCode == 201) {
+        return 1;
+      } else {
+        return 'Failed to Update Status of Task, status code: ${response.statusCode} ${response.body}';
+      }
+    } catch (e) {
+      return 'Server Error: $e';
+    } finally {
+      client.close();
+    }
+  }
 }

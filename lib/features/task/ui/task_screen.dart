@@ -14,17 +14,32 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+  List<TaskMember> members = [];
+  List<PopupMenuEntry<TaskMember>> membersDropDown = [];
   TaskOneBloc taskOneBloc = TaskOneBloc();
 
   @override
   void initState() {
-    taskOneBloc.add(FetchTaskDetails(taskId: widget.taskId));
+    taskOneBloc.add(FetchMembersProject(projectId: widget.projectId));
     super.initState();
   }
 
+  void buildPopup() {
+    membersDropDown = [];
+
+    for (int i = 0; i < members.length; i++) {
+      membersDropDown.add(
+        PopupMenuItem<TaskMember>(
+          value: members[i],
+          child: Text(members[i].fullname),
+        ),
+      );
+    }
+  }
+
   Widget buildMembers(List<TaskMember> members) {
-    if (members.length == 0) {
-      return Text("No Members Assigned");
+    if (members.isEmpty) {
+      return const Text("No Members Assigned");
     } else {
       List<Widget> result = [];
       for (int i = 0; i < members.length; i++) {
@@ -74,9 +89,14 @@ class _TaskScreenState extends State<TaskScreen> {
                 const SnackBar(content: Text("Task Status Update Failed")));
           } else if (state is ReloadTask) {
             taskOneBloc.add(FetchTaskDetails(taskId: widget.taskId));
+          } else if (state is MembersTaskLoaded) {
+            members = state.members;
+            buildPopup();
+            taskOneBloc.add(FetchTaskDetails(taskId: widget.taskId));
           }
         },
         builder: (context, state) {
+          print(state.runtimeType);
           switch (state.runtimeType) {
             case TaskOneLoading:
               return const Center(
@@ -171,11 +191,50 @@ class _TaskScreenState extends State<TaskScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Row(
+                        Row(
                           children: [
-                            Text('Members: ',
+                            const Text('Members: ',
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w500)),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            (LoginRepo.user.role == "Admin" ||
+                                    LoginRepo.user.role == "Project Manager" ||
+                                    LoginRepo.user.role == "Team Lead")
+                                ? PopupMenuButton(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: const BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5))),
+                                      child: const Text(
+                                        'Add Member',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                    onSelected: (TaskMember item) {
+                                      var test = taskLoaded.task.assignedTo
+                                          .where(((element) =>
+                                              element.fullname ==
+                                              item.fullname));
+                                      if (!test.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    "Member Already Added")));
+                                      } else {
+                                        taskOneBloc.add(AddMember(
+                                            memberId: item.id,
+                                            taskId: taskLoaded.task.id));
+                                      }
+                                    },
+                                    itemBuilder: (BuildContext context) =>
+                                        membersDropDown)
+                                : const SizedBox(),
                           ],
                         ),
                         const SizedBox(
