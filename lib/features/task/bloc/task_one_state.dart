@@ -16,3 +16,9 @@ class TaskOneLoaded extends TaskOneState {
 }
 
 class TaskOneLoadingFailed extends TaskOneState {}
+
+class TaskStatusUpdated extends TaskOneActionState {}
+
+class TaskStatusUpdateFailed extends TaskOneActionState {}
+
+class ReloadTask extends TaskOneActionState {}

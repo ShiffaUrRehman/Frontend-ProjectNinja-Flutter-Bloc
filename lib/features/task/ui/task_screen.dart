@@ -29,7 +29,15 @@ class _TaskScreenState extends State<TaskScreen> {
         listenWhen: (previous, current) => current is TaskOneActionState,
         buildWhen: (previous, current) => current is! TaskOneActionState,
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is TaskStatusUpdated) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Task Status Updated")));
+          } else if (state is TaskStatusUpdateFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Task Status Update Failed")));
+          } else if (state is ReloadTask) {
+            taskOneBloc.add(FetchTaskDetails(taskId: widget.taskId));
+          }
         },
         builder: (context, state) {
           print(state.runtimeType);
@@ -77,16 +85,69 @@ class _TaskScreenState extends State<TaskScreen> {
                                 style: const TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w400)),
                           ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          PopupMenuButton(
+                            initialValue: taskLoaded.task.status,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              child: const Text(
+                                'Change',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            onSelected: (String item) {
+                              taskOneBloc.add(ChangeStatusTask(
+                                  taskId: taskLoaded.task.id, status: item));
+                            },
+                            itemBuilder: (BuildContext context) =>
+                                <PopupMenuEntry<String>>[
+                              const PopupMenuItem<String>(
+                                value: "Ready to Start",
+                                child: Text('Ready to Start'),
+                              ),
+                              const PopupMenuItem<String>(
+                                value: "In Progress",
+                                child: Text('In Progress'),
+                              ),
+                              const PopupMenuItem<String>(
+                                value: "Waiting for Review",
+                                child: Text('Waiting for Review'),
+                              ),
+                              const PopupMenuItem<String>(
+                                value: "Complete",
+                                child: Text('Complete'),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          Text('Members: ',
+                          const Text('Members: ',
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w500)),
+                          ElevatedButton(
+                              onPressed: () {
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => Members(
+                                //         projectId: projectLoaded.project.id,
+                                //       ),
+                                //     ));
+                              },
+                              child: const Text('View'))
                         ],
                       ),
                     ],

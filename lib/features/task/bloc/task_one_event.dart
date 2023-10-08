@@ -8,3 +8,10 @@ class FetchTaskDetails extends TaskOneEvent {
 
   FetchTaskDetails({required this.taskId});
 }
+
+class ChangeStatusTask extends TaskOneEvent {
+  final String taskId;
+  final String status;
+
+  ChangeStatusTask({required this.status, required this.taskId});
+}

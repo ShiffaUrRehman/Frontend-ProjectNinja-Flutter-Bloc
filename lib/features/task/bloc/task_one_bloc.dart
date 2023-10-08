@@ -11,6 +11,7 @@ part 'task_one_state.dart';
 class TaskOneBloc extends Bloc<TaskOneEvent, TaskOneState> {
   TaskOneBloc() : super(TaskOneInitial()) {
     on<FetchTaskDetails>(fetchTaskDetails);
+    on<ChangeStatusTask>(changeStatusTask);
   }
 
   FutureOr<void> fetchTaskDetails(
@@ -21,6 +22,18 @@ class TaskOneBloc extends Bloc<TaskOneEvent, TaskOneState> {
       emit(TaskOneLoaded(task: response));
     } else {
       emit(TaskOneLoadingFailed());
+    }
+  }
+
+  FutureOr<void> changeStatusTask(
+      ChangeStatusTask event, Emitter<TaskOneState> emit) async {
+    emit(TaskOneLoading());
+    dynamic response =
+        await TasksScreenRepo.changeStatus(event.taskId, event.status);
+    if (response == 1) {
+      emit(ReloadTask());
+    } else {
+      emit(TaskStatusUpdateFailed());
     }
   }
 }
