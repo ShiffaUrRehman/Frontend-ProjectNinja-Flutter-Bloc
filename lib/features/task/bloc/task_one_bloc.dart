@@ -57,7 +57,6 @@ class TaskOneBloc extends Bloc<TaskOneEvent, TaskOneState> {
     emit(TaskOneLoading());
     dynamic response =
         await TasksScreenRepo.fetchAllProjectMembers(event.projectId);
-    print(response);
     if (response is List<TaskMember>) {
       emit(MembersTaskLoaded(members: response));
     } else {
