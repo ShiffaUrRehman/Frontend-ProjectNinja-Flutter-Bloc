@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_ninja/features/create_task/ui/create_task.dart';
+import 'package:project_ninja/features/login/repo/login_repo.dart';
 import 'package:project_ninja/features/task/ui/task_screen.dart';
 import 'package:project_ninja/features/tasks_home/bloc/tasks_home_bloc.dart';
 
@@ -69,12 +71,8 @@ class _TasksHomeState extends State<TasksHome> {
         bloc: tasksHomeBloc,
         listenWhen: (previous, current) => current is TasksHomeActionState,
         buildWhen: (previous, current) => current is! TasksHomeActionState,
-        listener: (context, state) {
-          print("Action State");
-          print(state);
-        },
+        listener: (context, state) {},
         builder: (context, state) {
-          print(state.runtimeType);
           switch (state.runtimeType) {
             case TasksLoading:
               return const Center(
@@ -94,8 +92,20 @@ class _TasksHomeState extends State<TasksHome> {
                         const Text("Tasks",
                             style: TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w400)),
-                        ElevatedButton(
-                            onPressed: () {}, child: const Text("Add New"))
+                        (LoginRepo.user.role == "Admin" ||
+                                LoginRepo.user.role == "Project Manager" ||
+                                LoginRepo.user.role == "Team Lead")
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CreateTask(
+                                              projectId: widget.projectId,
+                                              bloc: tasksHomeBloc)));
+                                },
+                                child: const Text("Add New"))
+                            : const SizedBox()
                       ],
                     ),
                     const SizedBox(height: 20),
