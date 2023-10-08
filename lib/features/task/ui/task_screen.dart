@@ -40,7 +40,6 @@ class _TaskScreenState extends State<TaskScreen> {
           }
         },
         builder: (context, state) {
-          print(state.runtimeType);
           switch (state.runtimeType) {
             case TaskOneLoading:
               return const Center(
