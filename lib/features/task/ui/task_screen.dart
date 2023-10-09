@@ -3,11 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ninja/features/login/repo/login_repo.dart';
 import 'package:project_ninja/features/task/bloc/task_one_bloc.dart';
 import 'package:project_ninja/features/task/model/task_one_model.dart';
+import 'package:project_ninja/features/tasks_home/bloc/tasks_home_bloc.dart';
 
 class TaskScreen extends StatefulWidget {
+  final TasksHomeBloc prevBloc;
   final String projectId;
   final String taskId;
-  const TaskScreen({super.key, required this.projectId, required this.taskId});
+  const TaskScreen(
+      {super.key,
+      required this.projectId,
+      required this.taskId,
+      required this.prevBloc});
 
   @override
   State<TaskScreen> createState() => _TaskScreenState();
@@ -75,7 +81,20 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Task")),
+      appBar: AppBar(
+        title: const Text("Task"),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+                widget.prevBloc.add(FetchTasks(projectId: widget.projectId));
+              },
+            );
+          },
+        ),
+      ),
       body: BlocConsumer<TaskOneBloc, TaskOneState>(
         bloc: taskOneBloc,
         listenWhen: (previous, current) => current is TaskOneActionState,

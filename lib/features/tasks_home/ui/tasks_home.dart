@@ -32,7 +32,9 @@ class _TasksHomeState extends State<TasksHome> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => TaskScreen(
-                      projectId: widget.projectId, taskId: tasks[i].id),
+                      prevBloc: tasksHomeBloc,
+                      projectId: widget.projectId,
+                      taskId: tasks[i].id),
                 ));
           },
           child: Container(

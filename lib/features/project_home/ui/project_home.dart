@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ninja/features/login/repo/login_repo.dart';
 import 'package:project_ninja/features/project_home/bloc/project_home_bloc.dart';
 import 'package:project_ninja/features/members/ui/members.dart';
+import 'package:project_ninja/features/projects_list/bloc/project_bloc.dart';
 import 'package:project_ninja/features/projects_list/models/project_model.dart';
 import 'package:project_ninja/features/tasks_home/ui/tasks_home.dart';
 
 class ProjectHome extends StatefulWidget {
+  final ProjectListBloc prevBloc;
   final Project project;
-  const ProjectHome({super.key, required this.project});
+  const ProjectHome({super.key, required this.project, required this.prevBloc});
 
   @override
   State<ProjectHome> createState() => _ProjectHomeState();
@@ -26,6 +28,17 @@ class _ProjectHomeState extends State<ProjectHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+                widget.prevBloc.add(FetchProjectsEvent());
+              },
+            );
+          },
+        ),
         title: const Text('Project Home'),
       ),
       body: BlocConsumer<ProjectHomeBloc, ProjectHomeState>(

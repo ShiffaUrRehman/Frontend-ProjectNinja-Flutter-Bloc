@@ -68,6 +68,7 @@ class _ProjectsState extends State<ProjectList> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProjectHome(
+                                prevBloc: projectBloc,
                                 project: projectsLoaded.projects[index],
                               ),
                             ));
