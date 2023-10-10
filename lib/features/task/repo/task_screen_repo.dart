@@ -5,8 +5,8 @@ import 'package:project_ninja/features/login/repo/login_repo.dart';
 import 'package:project_ninja/features/task/model/task_one_model.dart';
 
 class TasksScreenRepo {
-  // static const String url = "http://10.0.2.2:3000";
-  static const String url = "http://localhost:3000";
+  static const String url =
+      "https://backend-project-ninja-express-node-type-script.vercel.app";
 
   static Future<dynamic> fetchTask(taskId) async {
     var client = http.Client();

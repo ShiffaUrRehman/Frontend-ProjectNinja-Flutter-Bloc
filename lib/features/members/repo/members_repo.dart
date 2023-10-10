@@ -6,8 +6,8 @@ import 'package:project_ninja/features/members/model/members_models.dart';
 import 'package:project_ninja/features/projects_list/models/project_model.dart';
 
 class MembersRepo {
-  // static const String url = "http://10.0.2.2:3000";
-  static const String url = "http://localhost:3000";
+  static const String url =
+      "https://backend-project-ninja-express-node-type-script.vercel.app";
   static Future<dynamic> fetchAllTeamLeads() async {
     var client = http.Client();
     try {

@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:project_ninja/features/login/models/user_model.dart';
 
 class LoginRepo {
-  // static const String url = "http://10.0.2.2:3000";
-  static const String url = "http://localhost:3000";
+  static const String url =
+      "https://backend-project-ninja-express-node-type-script.vercel.app";
   static late User user;
 
   static Future<dynamic> userLogin(String username, String password) async {
