@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ninja/features/login/repo/login_repo.dart';
-import 'package:project_ninja/features/projects/bloc/project_bloc.dart';
+import 'package:project_ninja/features/projects_list/bloc/project_bloc.dart';
+import 'package:project_ninja/features/project_home/ui/project_home.dart';
 
-class Projects extends StatefulWidget {
-  const Projects({super.key});
+class ProjectList extends StatefulWidget {
+  const ProjectList({super.key});
 
   @override
-  State<Projects> createState() => _ProjectsState();
+  State<ProjectList> createState() => _ProjectsState();
 }
 
-class _ProjectsState extends State<Projects> {
-  ProjectBloc projectBloc = ProjectBloc();
+class _ProjectsState extends State<ProjectList> {
+  ProjectListBloc projectBloc = ProjectListBloc();
   @override
   void initState() {
     projectBloc.add(FetchProjectsEvent());
@@ -24,7 +24,7 @@ class _ProjectsState extends State<Projects> {
       appBar: AppBar(
         title: const Text('Projects'),
       ),
-      body: BlocConsumer<ProjectBloc, ProjectState>(
+      body: BlocConsumer<ProjectListBloc, ProjectListState>(
         bloc: projectBloc,
         listenWhen: (previous, current) => current is ProjectActionState,
         buildWhen: (previous, current) => current is! ProjectActionState,
@@ -32,7 +32,6 @@ class _ProjectsState extends State<Projects> {
           // TODO: implement listener
         },
         builder: (context, state) {
-          print(state.runtimeType);
           switch (state.runtimeType) {
             case NoProjectLoadedState:
               return const Center(
@@ -45,8 +44,8 @@ class _ProjectsState extends State<Projects> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       child: Container(
-                        padding: EdgeInsets.all(20),
-                        margin: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(20),
+                        margin: const EdgeInsets.all(10),
                         color: Colors.grey.shade300,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -65,8 +64,14 @@ class _ProjectsState extends State<Projects> {
                         ),
                       ),
                       onTap: () {
-                        print(projectsLoaded.projects[index].teamMember);
-                        print("Project Clicked");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProjectHome(
+                                prevBloc: projectBloc,
+                                project: projectsLoaded.projects[index],
+                              ),
+                            ));
                       },
                     );
                   });
@@ -75,14 +80,10 @@ class _ProjectsState extends State<Projects> {
                 child: CircularProgressIndicator(),
               );
             default:
+              return const Center(
+                child: Text('Error'),
+              );
           }
-          return Column(children: [
-            Text(LoginRepo.user.id),
-            Text(LoginRepo.user.username),
-            Text(LoginRepo.user.fullname),
-            Text(LoginRepo.user.role),
-            Text(LoginRepo.user.token),
-          ]);
         },
       ),
     );
